@@ -13,6 +13,7 @@ from functions.translate import translate
 from functions.weather import weather
 from functions.calculate import calculate
 from functions.idioms import find_idioms_cn
+from functions.battery import report_battery
 
 user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 ' \
              'Safari/537.36 '
@@ -88,6 +89,7 @@ class ChatBot:
             # 私聊
             if rev["message_type"] == "private":
                 message = rev['raw_message']
+                temp = message.split(' ')
                 qq = rev['sender']['user_id']
 
                 if 'face' in message:
@@ -96,6 +98,53 @@ class ChatBot:
                 elif 'image' in message:
                     img = rev['raw_message']
                     send_msg({'msg_type': 'private', 'number': qq, 'msg': img})
+                elif message[:4] == "help":
+                    send_msg({'msg_type': 'private', 'number': qq, 'msg': get_menu(message[4:])})
+                    return
+                elif message[:2] == "翻译":
+                    result = translate(message[3:])
+                    send_msg({'msg_type': 'private', 'number': qq, 'msg': result})
+                    return
+                elif message[:2] == "天气":
+                    result = weather(message[3:])
+                    send_msg({'msg_type': 'private', 'number': qq, 'msg': result})
+                    return
+                elif message[:2] == "计算":
+                    result = calculate(message[3:])
+                    send_msg({'msg_type': 'private', 'number': qq, 'msg': result})
+                    return
+                elif message[:2] == "成语":
+                    result = find_idioms_cn(message[3:])
+                    send_msg({'msg_type': 'private', 'number': qq, 'msg': result})
+                    return
+                elif '爆照' in temp[0]:
+                    url = self.img_list1[random.randint(0, len(self.img_list1))]
+                    send_msg({'msg_type': 'private', 'number': qq,
+                              'msg': '[CQ:image,type=flash,file={}]'.format(url)})
+                    return
+                elif '美女' in temp[0]:
+                    url = self.img_list1[random.randint(0, len(self.img_list1))]
+                    send_msg({'msg_type': 'private', 'number': qq,
+                              'msg': '[CQ:image,type=flash,file={}]'.format(url)})
+                    return
+                elif '照片' in temp[0]:
+                    url = self.img_list1[random.randint(0, len(self.img_list1))]
+                    send_msg({'msg_type': 'private', 'number': qq,
+                              'msg': '[CQ:image,type=flash,file={}]'.format(url)})
+                    return
+                elif '帅哥' in temp[0]:
+                    url = self.img_list4[random.randint(0, len(self.img_list4))]
+                    send_msg({'msg_type': 'private', 'number': qq,
+                              'msg': '[CQ:image,type=flash,file={}]'.format(url)})
+                    return
+                elif message == '壁纸':
+                    url = self.img_list3[random.randint(0, len(self.img_list3))]
+                    send_msg({'msg_type': 'private', 'number': qq,
+                              'msg': '[CQ:image,type=flash,file={}]'.format(url)})
+                    return
+                elif message == '电量':
+                    result = report_battery()
+                    send_msg({'msg_type': 'private', 'number': qq, 'msg': result})
                 else:
                     result = chat(message)
                     send_msg({'msg_type': 'private', 'number': qq, 'msg': result})
