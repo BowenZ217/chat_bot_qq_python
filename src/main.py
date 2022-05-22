@@ -1,4 +1,5 @@
 from chat_bot import ChatBot
+# import os
 
 
 def main():
@@ -7,8 +8,8 @@ def main():
     qq_group_list = [123456, 654321]  # 输入要定时发送消息的QQ群号
 
     qq_robot = ChatBot(qq, qq_list, qq_group_list)
-    while True:
-        qq_robot.check()
+
+    qq_robot.run()
 
 
 if __name__ == "__main__":

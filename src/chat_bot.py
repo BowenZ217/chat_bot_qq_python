@@ -24,6 +24,7 @@ class ChatBot:
     def __init__(self, qq, qq_list, qq_group_list):
         # qq机器人初始化
         self.qq_robot = eval(qq)
+        self.state = False
         self.qq_list = qq_list
         self.qq_group_list = qq_group_list
         self.headers = {
@@ -214,3 +215,8 @@ class ChatBot:
                 send_msg({'msg_type': 'group', 'number': group, 'msg': '戳我干嘛！'})
                 return
         return
+
+    def run(self):
+        self.state = True
+        while self.state:
+            self.check()
