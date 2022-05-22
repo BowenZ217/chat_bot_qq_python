@@ -7,6 +7,7 @@ def main():
     qq_list = [123456]  # 输入要定时发送消息的QQ号
     qq_group_list = [123456, 654321]  # 输入要定时发送消息的QQ群号
 
+    # os.system('start cmd /K "go-cqhttp.exe"')
     qq_robot = ChatBot(qq, qq_list, qq_group_list)
 
     qq_robot.run()
